@@ -31,10 +31,8 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-    loggedin: state.loggedin
+    loggedin: state.loggedin,
+    user: state.user
 });
 
-export default connect(
-    mapStateToProps,
-    null
-)(App);
+export default connect(mapStateToProps)(App);

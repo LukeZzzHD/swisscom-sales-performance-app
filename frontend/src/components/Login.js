@@ -11,10 +11,6 @@ class Login extends Component {
     };
 
     render() {
-        if (this.props.loggedin) {
-            return <Redirect to='/' />;
-        }
-
         return (
             <div id='overall-informations'>
                 <div className='container'>
@@ -89,8 +85,6 @@ class Login extends Component {
         this.setState({
             [e.target.name]: e.target.value
         });
-
-        console.log(`state: ${JSON.stringify(this.state)}`);
     };
 
     handleSubmit = e => {
@@ -104,7 +98,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    login: (username, password) => dispatch(LOGIN(username, password))
+    login: (username, password) => {
+        dispatch(LOGIN(username, password));
+    }
 });
 
 export default connect(

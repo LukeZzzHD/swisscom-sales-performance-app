@@ -19,48 +19,39 @@ const initState = () => ({
     errors: []
 });
 
-const rootReducer = (state = initState(), action) => {
-    var newState, data, config;
-
+const rootReducer = async (state = initState, action) => {
     switch (action.type) {
         case LOGIN:
             // Get email and password from payload
-            data = { ...action.payload };
+            let loginData = { ...action.payload };
 
-            config = {
+            let loginConfig = {
                 'Content-Type': 'application/json'
             };
 
-            // Initialize a newState object
-            newState = {
-                loggedin: false,
-                user: null,
-                errors: []
-            };
+            let newState = {};
 
             // Make a post request with axios to the sigin-api-route
-            axios
-                .post(API.USERS.SIGNIN, data, config)
-                .then(res => {
-                    if (res.ok) {
-                        localStorage.setItem('token', res.token);
-                        console.log('Successfully stored JWT in localStorage');
-                        newState.loggedin = true;
-                        newState.user = res.user;
-                    } else {
-                        console.log('Error with login call, errors are in the state.errors array');
-                        newState.errors.push(res.message);
-                    }
-                })
-                .catch(err => console.log(err));
+            let res = await axios.post(API.USERS.SIGNIN, loginData, loginConfig);
+            if (res.data.ok) {
+                localStorage.setItem('token', res.data.token);
+                console.log('Successfully stored JWT in localStorage');
+                newState.loggedin = true;
+                newState.user = res.data.user;
+                newState.errors = [];
+            } else {
+                console.log('Error with login call, errors are in the state.errors array');
+                newState.errors.push(res.data.message);
+            }
 
-            return {
-                ...state,
-                ...newState
-            };
+            return Object.assign({}, state, {
+                loggedin: newState.loggedin,
+                user: newState.user,
+                errors: newState.errors
+            });
 
         case LOGOUT:
-            newState = {
+            let newLogoutState = {
                 loggedin: false,
                 user: null,
                 errors: []
@@ -69,42 +60,42 @@ const rootReducer = (state = initState(), action) => {
             localStorage.removeItem('token');
             return {
                 ...state,
-                ...newState
+                ...newLogoutState
             };
 
         case REGISTER:
-            data = { ...action.payload };
+            let registerData = { ...action.payload };
 
-            config = {
+            let registerConfig = {
                 'Content-Type': 'application/json'
             };
 
-            newState = {
+            let newRegisterState = {
                 loggedin: false,
                 user: null,
                 errors: []
             };
 
             axios
-                .post(API.USERS.SIGNUP, data, config)
+                .post(API.USERS.SIGNUP, registerData, registerConfig)
                 .then(res => {
-                    if (res.ok) {
-                        localStorage.setItem('token', res.token);
+                    if (res.data.ok) {
+                        localStorage.setItem('token', res.data.token);
                         console.log('Successfully stored JWT in localStorage');
-                        newState.loggedin = true;
-                        newState.user = res.user;
+                        newRegisterState.loggedin = true;
+                        newRegisterState.user = res.data.user;
                     } else {
-                        if (res.errors.length > 0) {
-                            newState.errors = res.errors;
+                        if (res.data.errors.length > 0) {
+                            newRegisterState.errors = res.data.errors;
                         } else {
                             // Error while creating user, log on backend
-                            console.log(res.message);
+                            console.log(res.data.message);
                         }
                     }
                 })
                 .catch(err => console.log(err));
 
-            return newState;
+            return newRegisterState;
 
         case INCREMENT_WEEKLY:
             // axios request ->

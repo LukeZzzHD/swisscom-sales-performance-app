@@ -4,13 +4,20 @@ const CONFIG = require('./config');
 const bodyParser = require('body-parser');
 const getApiRouter = require('./routers');
 const mongoose = require('mongoose');
+const path = require('path');
+const cors = require('cors');
 
 const app = express();
 app.set('Secret', CONFIG.SECRET);
 
 // Middleware
 app.use(bodyParser.json());
+app.use(cors());
 app.use('/api', getApiRouter());
+app.use('/', express.static(path.join(__dirname, '/../frontend/build/')));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '/../frontend/build/index.html'));
+});
 
 // Connect to the database
 mongoose.connect('mongodb://127.0.0.1:27017/salesperformance', { useNewUrlParser: true, useUnifiedTopology: true });
@@ -18,5 +25,5 @@ mongoose.connect('mongodb://127.0.0.1:27017/salesperformance', { useNewUrlParser
 // Start server
 const PORT = process.env.PORT || CONFIG.PORT;
 app.listen(PORT, err => {
-	err ? console.error(err) : console.log(`Api running on port ${CONFIG.PORT}`);
+    err ? console.error(err) : console.log(`Api running on port ${CONFIG.PORT}`);
 });
