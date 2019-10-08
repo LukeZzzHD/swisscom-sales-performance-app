@@ -1,0 +1,31 @@
+{
+    "name": "api-auth",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start-dev": "nodemon ./index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/LukeZzzHD/node-api-auth.git"
+    },
+    "author": "Lukas Schwab",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/LukeZzzHD/node-api-auth/issues"
+    },
+    "homepage": "https://github.com/LukeZzzHD/node-api-auth#readme",
+    "dependencies": {
+        "axios": "^0.19.0",
+        "bcrypt": "^3.0.6",
+        "body-parser": "^1.19.0",
+        "express": "^4.17.1",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^5.7.1"
+    },
+    "devDependencies": {
+        "nodemon": "^1.19.2"
+    }
+}
