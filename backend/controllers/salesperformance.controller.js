@@ -361,6 +361,31 @@ const salesperformanceController = {
 				}
 			})
 			.catch(err => console.log(err));
+	},
+	allPerformances: (req, res) => {
+		const { token } = req.body;
+		let config = {
+			'Content-Type': 'application/json'
+		};
+		let data = { token };
+
+		axios.post(`${CONFIG.HOST}/api/users/verifyAdmin`, data, config).then(async response => {
+			if(response.data.ok) {
+				//admin verified successfully
+				let spos = await salesperformanceModel.find();
+
+				return res.json({
+					ok: true,
+					message: 'Fetched all salesperformance objects',
+					performances: spos
+				});
+			} else {
+				res.json({
+					ok: false,
+					message: 'Unauthorized!'
+				})
+			}
+		}).catch(err => console.log(err));
 	}
 };
 

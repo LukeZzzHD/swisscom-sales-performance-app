@@ -3,15 +3,18 @@ const API = {
         SIGNIN: '/api/users/signin',
         SIGNUP: '/api/users/signup',
         VERIFY: '/api/users/verify',
-        VERIFY_ADMIN: '/api/users/verifyAdmin'
+        VERIFY_ADMIN: '/api/users/verifyAdmin',
     },
     SALESPERFORMANCE: {
-        INCREASE: performance_name => `/api/salesperformance/increase/${performance_name}`,
-        DECREASE: performance_name => `/api/salesperformance/decrease/${performance_name}`,
+        INCREASE: performance_name =>
+            `/api/salesperformance/increase/${performance_name}`,
+        DECREASE: performance_name =>
+            `/api/salesperformance/decrease/${performance_name}`,
         WEEKLY: '/api/salesperformance/weekly',
         MONTHLY: '/api/salesperformance/monthly',
-        YEARLY: '/api/salesperformance/yearly'
-    }
+        YEARLY: '/api/salesperformance/yearly',
+        ALL_PERFORMANCES: '/api/salesperformance/allPerformances',
+    },
 };
 
 export default API;
