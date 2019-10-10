@@ -1,17 +1,7 @@
 import API from '../api';
 import axios from 'axios';
 import actionTypes from '../actions/actionTypes';
-const {
-    LOGIN,
-    LOGOUT,
-    REGISTER,
-    INCREMENT_WEEKLY,
-    INCREMENT_MONTHLY,
-    INCREMENT_YEARLY,
-    DECREMENT_WEEKLY,
-    DECREMENT_MONTHLY,
-    DECREMENT_YEARLY,
-} = actionTypes;
+const { LOGIN, LOGOUT, REGISTER, INCREASE, DECREASE } = actionTypes;
 
 const initState = () => {
     let state = {
@@ -111,27 +101,21 @@ const rootReducer = async (state = initState(), action) => {
                 }
             }
 
-        case INCREMENT_WEEKLY:
-            // axios request ->
+        case INCREASE:
+            let increaseData = { ...action.payload };
+            let increaseConfig = { 'Content-Type': 'application/json' };
+            let increaseRes = await axios.post(
+                API.SALESPERFORMANCE.INCREASE,
+                increaseData,
+                increaseConfig,
+            );
+            if (increaseRes.data.ok) {
+            } else {
+                return state;
+            }
             break;
 
-        case INCREMENT_MONTHLY:
-            // axios request ->
-            break;
-
-        case INCREMENT_YEARLY:
-            // axios request ->
-            break;
-
-        case DECREMENT_WEEKLY:
-            // axios request ->
-            break;
-
-        case DECREMENT_MONTHLY:
-            // axios request ->
-            break;
-
-        case DECREMENT_YEARLY:
+        case DECREASE:
             // axios request ->
             break;
 

@@ -7,32 +7,31 @@ const userSchema = new Schema({
         required: true,
         unique: true,
         minlength: 4,
-        maxlength: 20
+        maxlength: 20,
     },
     firstName: {
         type: String,
-        required: true
+        required: true,
     },
     lastName: {
         type: String,
-        required: true
+        required: true,
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
     isAdmin: {
         type: Boolean,
-        default: false
+        default: false,
     },
     image: {
         type: String,
-        default: 'default.jpg'
+        default: 'default.jpg',
     },
     oeDescription: {
         type: String,
-        required: true
-    }
+    },
 });
 
 module.exports = mongoose.model('User', userSchema);

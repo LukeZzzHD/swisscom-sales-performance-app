@@ -8,14 +8,6 @@ class Weekly extends Component {
         goalAOITWeekly: 9576,
     };
 
-    componentDidMount() {
-        //get Weekly data from props and update state
-        const { data } = this.props;
-        this.setState({
-            ...data,
-        });
-    }
-
     render() {
         const {
             valueMobileWeekly,

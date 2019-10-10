@@ -2,25 +2,11 @@ import React, { Component } from 'react';
 
 class Yearly extends Component {
     state = {
-        valueMobileYearly: 0,
-        valueDslAndTvYearly: 0,
-        valueAccessoryYearly: 0,
-        valueAOITYearly: 0,
-        valueInternetSecurityYearly: 0,
-        valueMyServiceAboYearly: 0,
-        valueProtectionPlusYearly: 0,
         goalMobileYearly: 104,
         goalDslAndTvYearly: 172,
         goalAccessoryYearly: 37308,
         goalAOITYearly: 9576,
     };
-    componentDidMount() {
-        //get Yearly data from props and update state
-        const { data } = this.props;
-        this.setState({
-            ...data,
-        });
-    }
 
     render() {
         const {
@@ -31,6 +17,9 @@ class Yearly extends Component {
             valueInternetSecurityYearly,
             valueMyServiceAboYearly,
             valueProtectionPlusYearly,
+        } = this.props.data;
+
+        const {
             goalMobileYearly,
             goalDslAndTvYearly,
             goalAccessoryYearly,

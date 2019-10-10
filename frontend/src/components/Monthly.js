@@ -1,30 +1,12 @@
 import React, { Component } from 'react';
 
-// eslint-disable-next-line
-import axios from 'axios';
-
 class Monthly extends Component {
     state = {
-        valueMobileMonthly: 0,
-        valueDslAndTvMonthly: 0,
-        valueAccessoryMonthly: 0,
-        valueAOITMonthly: 0,
-        valueInternetSecurityMonthly: 0,
-        valueMyServiceAboMonthly: 0,
-        valueProtectionPlusMonthly: 0,
         goalMobileMonthly: 104,
         goalDslAndTvMonthly: 172,
         goalAccessoryMonthly: 37308,
         goalAOITMonthly: 9576,
     };
-
-    componentDidMount() {
-        //get Monthly data from props and update state
-        const { data } = this.props;
-        this.setState({
-            ...data,
-        });
-    }
 
     render() {
         const {
@@ -35,6 +17,9 @@ class Monthly extends Component {
             valueInternetSecurityMonthly,
             valueMyServiceAboMonthly,
             valueProtectionPlusMonthly,
+        } = this.props.data;
+
+        const {
             goalMobileMonthly,
             goalDslAndTvMonthly,
             goalAccessoryMonthly,
