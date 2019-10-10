@@ -71,7 +71,7 @@ const rootReducer = async (state = initState(), action) => {
                 'Content-Type': 'application/json',
             };
 
-            let registerRes = axios.post(
+            let registerRes = await axios.post(
                 API.USERS.SIGNUP,
                 registerData,
                 registerConfig,
