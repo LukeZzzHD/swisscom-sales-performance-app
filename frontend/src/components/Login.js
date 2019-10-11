@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { LOGIN } from '../actions/actionCreators';
+import { LOGIN_REQUESTED } from '../actions/actionCreators';
 
 class Login extends Component {
     state = {
@@ -11,6 +11,9 @@ class Login extends Component {
     };
 
     render() {
+        if (this.props.loggedin) {
+            return <Redirect to='/' />;
+        }
         return (
             <div id='overall-informations'>
                 <div className='container'>
@@ -87,7 +90,7 @@ class Login extends Component {
         });
     };
 
-    handleSubmit = e => {
+    handleSubmit = async e => {
         e.preventDefault();
         this.props.login(this.state.username, this.state.password);
     };
@@ -99,7 +102,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     login: (username, password) => {
-        dispatch(LOGIN(username, password));
+        dispatch(LOGIN_REQUESTED(username, password));
     }
 });
 

@@ -7,24 +7,14 @@ const salesperformanceModel = require('../models/salesperformance.model');
 
 const userController = {
     signUp: (req, res) => {
-        const {
-            username,
-            password,
-            password2,
-            image,
-            firstName,
-            lastName,
-            oeDescription,
-        } = req.body;
+        const { username, password, password2, image, firstName, lastName, oeDescription } = req.body;
 
         // Does user allready exist?
         userModel
             .findOne({ username })
             .then(user => {
                 if (!user) {
-                    console.log(
-                        `Success, there is currently no user with username: ${username}`,
-                    );
+                    console.log(`Success, there is currently no user with username: ${username}`);
                 }
             })
             .catch(err => {
@@ -35,14 +25,12 @@ const userController = {
         const errors = [];
         if (username.length < 4) {
             errors.push({
-                message:
-                    'The provided username is too short, it must be at least 4 characters long.',
+                message: 'The provided username is too short, it must be at least 4 characters long.'
             });
         }
         if (username.length > 20) {
             errors.push({
-                message:
-                    'The provided username is too long, it can only be 20 characters long.',
+                message: 'The provided username is too long, it can only be 20 characters long.'
             });
         }
         if (password !== password2) {
@@ -54,7 +42,7 @@ const userController = {
             return res.json({
                 ok: false,
                 message: 'User credentials not valid, check errors property.',
-                errors,
+                errors
             });
         } else {
             //Create password hash with bcrypt
@@ -65,17 +53,13 @@ const userController = {
                     firstName,
                     lastName,
                     image: image ? image : null,
-                    oeDescription,
+                    oeDescription
                 });
 
                 // Create a jwt with the usernem firstName and lastName that expires in one hour
-                const token = jwt.sign(
-                    { username, firstName, lastName, isAdmin: false },
-                    CONFIG.SECRET,
-                    {
-                        expiresIn: '1h',
-                    },
-                );
+                const token = jwt.sign({ username, firstName, lastName, isAdmin: false }, CONFIG.SECRET, {
+                    expiresIn: '1h'
+                });
 
                 // Save the user to the database
                 newUser
@@ -83,9 +67,7 @@ const userController = {
                     .then(user => {
                         console.log(JSON.stringify(user));
 
-                        createSalesperformanceFields(user).then(
-                            console.log('Created spo fields for user in db'),
-                        );
+                        createSalesperformanceFields(user).then(console.log('Created spo fields for user in db'));
 
                         user.password = null;
 
@@ -93,15 +75,15 @@ const userController = {
                             ok: true,
                             message: `Succesfully created user ${user.username}!`,
                             token,
-                            user,
+                            user
                         });
                     })
                     .catch(err => {
                         console.log(err);
                         return res.json({
                             ok: false,
-                            message:
-                                'Error while creating user!\n' + err.message,
+                            message: 'Error while creating user!\n' + err.message,
+                            errors
                         });
                     });
             });
@@ -125,10 +107,10 @@ const userController = {
                                     username,
                                     firstName: user.firstName,
                                     lastName: user.lastName,
-                                    isAdmin: user.isAdmin,
+                                    isAdmin: user.isAdmin
                                 },
                                 CONFIG.SECRET,
-                                rememberMe ? {} : { expiresIn: '1h' },
+                                rememberMe ? {} : { expiresIn: '1h' }
                             );
 
                             user.password = null;
@@ -137,12 +119,12 @@ const userController = {
                                 ok: true,
                                 message: `Sign in succesful for user ${username}`,
                                 token,
-                                user,
+                                user
                             });
                         } else {
                             return res.json({
                                 ok: false,
-                                message: 'Invalid credentials!',
+                                message: 'Invalid credentials!'
                             });
                         }
                     })
@@ -160,12 +142,12 @@ const userController = {
                 console.log('verify -> ' + err.message);
                 return res.json({
                     ok: false,
-                    message: "User couldn't be verified, please log in!",
+                    message: "User couldn't be verified, please log in!"
                 });
             } else {
                 return res.json({
                     ok: true,
-                    message: `User ${decoded.username} verified succesfully!`,
+                    message: `User ${decoded.username} verified succesfully!`
                 });
             }
         });
@@ -178,23 +160,23 @@ const userController = {
                 console.error(err);
                 return res.json({
                     ok: false,
-                    message: "User couldn't be verified, please log in!",
+                    message: "User couldn't be verified, please log in!"
                 });
             } else {
                 if (decoded.isAdmin == true) {
                     return res.json({
                         ok: true,
-                        message: `${decoded.username} has been succesfully verified as an admin!`,
+                        message: `${decoded.username} has been succesfully verified as an admin!`
                     });
                 } else {
                     return res.json({
                         ok: false,
-                        message: `${decoded.username} has insufficient permissions!`,
+                        message: `${decoded.username} has insufficient permissions!`
                     });
                 }
             }
         });
-    },
+    }
 };
 
 async function createSalesperformanceFields(user) {
@@ -205,22 +187,22 @@ async function createSalesperformanceFields(user) {
             name: 'accessory',
             goalWeekly: 1354,
             goalMonthly: 5416,
-            goalYearly: 64992,
+            goalYearly: 64992
         },
         { name: 'aoit', goalWeekly: 372, goalMonthly: 1488, goalYearly: 17856 },
         {
             name: 'internetsecurity',
             goalWeekly: 0,
             goalMonthly: 0,
-            goalYearly: 0,
+            goalYearly: 0
         },
         { name: 'myserviceabo', goalWeekly: 0, goalMonthly: 0, goalYearly: 0 },
         {
             name: 'protectionplus',
             goalWeekly: 0,
             goalMonthly: 0,
-            goalYearly: 0,
-        },
+            goalYearly: 0
+        }
     ];
 
     values.forEach(obj => {
@@ -230,7 +212,7 @@ async function createSalesperformanceFields(user) {
             goalWeekly: obj.goalWeekly,
             goalMonthly: obj.goalMonthly,
             goalYearly: obj.goalYearly,
-            performances: [],
+            performances: []
         });
 
         tempModel

@@ -1,59 +1,41 @@
-import API from '../api';
-import axios from 'axios';
 import actionTypes from '../actions/actionTypes';
-const { LOGIN, LOGOUT, REGISTER, INCREASE, DECREASE } = actionTypes;
+const {
+    LOGIN_SUCCESSFUL,
+    LOGIN_FAILED,
+    LOGOUT,
+    REGISTER_FAILED,
+    INCREASE_SUCCESSFUL,
+    INCREASE_FAILED,
+    DECREASE_SUCCESSFUL,
+    DECREASE_FAILED
+} = actionTypes;
 
-const initState = () => {
-    let state = {
-        loggedin: false,
-        user: null,
-        errors: [],
-    };
+const initState = () => ({
+    loggedin: false,
+    user: null,
+    errors: []
+});
 
-    console.log('initState called!');
+const rootReducer = (state = initState(), action) => {
+    console.log('reducer state:');
     console.log(state);
 
-    return state;
-};
-
-const rootReducer = async (state = initState(), action) => {
     switch (action.type) {
-        case LOGIN:
-            // Get email and password from payload
-            let loginData = { ...action.payload };
+        case LOGIN_SUCCESSFUL:
+            localStorage.setItem('token', action.payload.token);
 
-            let loginConfig = {
-                'Content-Type': 'application/json',
+            return {
+                ...state,
+                loggedin: true,
+                user: action.payload.user,
+                errors: []
             };
 
-            let newState = {};
-
-            // Make a post request with axios to the sigin-api-route
-            let loginRes = await axios.post(
-                API.USERS.SIGNIN,
-                loginData,
-                loginConfig,
-            );
-            if (loginRes.data.ok) {
-                localStorage.setItem('token', loginRes.data.token);
-                console.log('Successfully stored JWT in localStorage');
-                return {
-                    loggedin: true,
-                    user: loginRes.data.user,
-                    errors: [],
-                };
-            } else {
-                console.log(
-                    'Error with login call, errors are in the state.errors array',
-                );
-
-                return {
-                    ...state,
-                    loggedin: false,
-                    user: null,
-                    errors: [loginRes.data.message],
-                };
-            }
+        case LOGIN_FAILED:
+            return {
+                ...state,
+                errors: [...action.payload.errors, action.payload.message]
+            };
 
         case LOGOUT:
             localStorage.removeItem('token');
@@ -61,63 +43,36 @@ const rootReducer = async (state = initState(), action) => {
                 ...state,
                 loggedin: false,
                 user: null,
-                errors: [],
+                errors: []
             };
 
-        case REGISTER:
-            let registerData = { ...action.payload };
-
-            let registerConfig = {
-                'Content-Type': 'application/json',
+        case REGISTER_FAILED:
+            return {
+                ...state,
+                loggedin: false,
+                user: null,
+                errors: [...action.payload.errors, action.payload.message]
             };
 
-            let registerRes = await axios.post(
-                API.USERS.SIGNUP,
-                registerData,
-                registerConfig,
-            );
-            if (registerRes.data.ok) {
-                localStorage.setItem('token', registerRes.data.token);
-                console.log('Successfully stored JWT in localStorage');
+        case INCREASE_SUCCESSFUL:
+            // Nothing to do here
+            return state;
 
-                return {
-                    ...state,
-                    loggedin: true,
-                    user: registerRes.data.user,
-                    errors: [],
-                };
-            } else {
-                if (registerRes.data.errors.length > 0) {
-                    return {
-                        ...state,
-                        loggedin: false,
-                        user: null,
-                        errors: [...registerRes.data.errors],
-                    };
-                } else {
-                    // Error while creating user, log on backend
-                    console.log(registerRes.data.message);
-                    return state;
-                }
-            }
+        case INCREASE_FAILED:
+            return {
+                ...state,
+                errors: [...action.payload.errors, action.payload.message]
+            };
 
-        case INCREASE:
-            let increaseData = { ...action.payload };
-            let increaseConfig = { 'Content-Type': 'application/json' };
-            let increaseRes = await axios.post(
-                API.SALESPERFORMANCE.INCREASE,
-                increaseData,
-                increaseConfig,
-            );
-            if (increaseRes.data.ok) {
-            } else {
-                return state;
-            }
-            break;
+        case DECREASE_SUCCESSFUL:
+            // Nothing to do here
+            return state;
 
-        case DECREASE:
-            // axios request ->
-            break;
+        case DECREASE_FAILED:
+            return {
+                ...state,
+                errors: [...action.payload.errors, action.payload.message]
+            };
 
         default:
             return state;

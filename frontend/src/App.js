@@ -14,13 +14,10 @@ class App extends Component {
             <>
                 <Navbar />
                 <Switch>
-                    <Route exact path="/" component={Home} />
-                    <Route path="/login" component={Login} />
-                    <Route path="/register" component={Register} />
-                    <Route
-                        path="/mysalesperformance"
-                        component={MySalesperformance}
-                    />
+                    <Route exact path='/' component={Home} />
+                    <Route path='/login' component={Login} />
+                    <Route path='/register' component={Register} />
+                    <Route path='/mysalesperformance' component={MySalesperformance} />
                 </Switch>
             </>
         );
@@ -30,11 +27,11 @@ class App extends Component {
 const mapStateToProps = state => {
     return {
         loggedin: state.loggedin,
-        user: state.user,
+        user: state.user
     };
 };
 
 export default connect(
     mapStateToProps,
-    null,
+    null
 )(App);
