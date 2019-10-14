@@ -14,6 +14,7 @@ app.set('Secret', CONFIG.SECRET);
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/api', getApiRouter());
+app.use('/profile_pictures', express.static('uploads/profile_pictures'));
 app.use('/', express.static(path.join(__dirname, '/../frontend/build/')));
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/../frontend/build/index.html'));
