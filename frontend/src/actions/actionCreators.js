@@ -94,7 +94,7 @@ const INCREASE_REQUESTED = (token, performance_name, username) => {
     return async dispatch => {
         axios
             .post(
-                API.SALESPERFORMANCE.INCREASE(performance_name),
+                API.SALESPERFORMANCE.INCREASE(performance_name, username),
                 {
                     token
                 },
@@ -127,7 +127,7 @@ const DECREASE_REQUESTED = (token, performance_name, username) => {
     return async dispatch => {
         axios
             .post(
-                API.SALESPERFORMANCE.DECREASE(performance_name),
+                API.SALESPERFORMANCE.DECREASE(performance_name, username),
                 {
                     token
                 },
@@ -144,5 +144,7 @@ const DECREASE_REQUESTED = (token, performance_name, username) => {
             });
     };
 };
+
+const FETCH_SALESPERFORMANCES_REQUESTED = ()
 
 export { LOGIN_REQUESTED, LOGOUT, REGISTER_REQUESTED, INCREASE_REQUESTED, DECREASE_REQUESTED };

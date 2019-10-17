@@ -7,13 +7,13 @@ const {
     INCREASE_SUCCESSFUL,
     INCREASE_FAILED,
     DECREASE_SUCCESSFUL,
-    DECREASE_FAILED
+    DECREASE_FAILED,
 } = actionTypes;
 
 const initState = () => ({
     loggedin: false,
     user: null,
-    errors: []
+    errors: [],
 });
 
 const rootReducer = (state = initState(), action) => {
@@ -28,13 +28,13 @@ const rootReducer = (state = initState(), action) => {
                 ...state,
                 loggedin: true,
                 user: action.payload.user,
-                errors: []
+                errors: [],
             };
 
         case LOGIN_FAILED:
             return {
                 ...state,
-                errors: [...action.payload.errors, action.payload.message]
+                errors: [...action.payload.errors, action.payload.message],
             };
 
         case LOGOUT:
@@ -43,7 +43,7 @@ const rootReducer = (state = initState(), action) => {
                 ...state,
                 loggedin: false,
                 user: null,
-                errors: []
+                errors: [],
             };
 
         case REGISTER_FAILED:
@@ -51,7 +51,7 @@ const rootReducer = (state = initState(), action) => {
                 ...state,
                 loggedin: false,
                 user: null,
-                errors: [...action.payload.errors, action.payload.message]
+                errors: [...action.payload.errors, action.payload.message],
             };
 
         case INCREASE_SUCCESSFUL:
@@ -61,7 +61,7 @@ const rootReducer = (state = initState(), action) => {
         case INCREASE_FAILED:
             return {
                 ...state,
-                errors: [...action.payload.errors, action.payload.message]
+                errors: [...action.payload.errors, action.payload.message],
             };
 
         case DECREASE_SUCCESSFUL:
@@ -71,10 +71,16 @@ const rootReducer = (state = initState(), action) => {
         case DECREASE_FAILED:
             return {
                 ...state,
-                errors: [...action.payload.errors, action.payload.message]
+                errors: [...action.payload.errors, action.payload.message],
             };
 
         default:
+            return state;
+
+        case FETCH_SALESPERFORMANCES_SUCCESSFUL:
+            return state;
+
+        case FETCH_SALESPERFORMANCES_FAILED:
             return state;
     }
 };
