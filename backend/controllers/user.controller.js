@@ -7,7 +7,7 @@ const salesperformanceModel = require('../models/salesperformance.model');
 
 const userController = {
     signUp: (req, res) => {
-        const { username, password, password2, image, firstName, lastName, oeDescription } = req.body;
+        const { username, password, password2, firstName, lastName, oeDescription } = req.body;
 
         // Does user allready exist?
         userModel
@@ -52,8 +52,8 @@ const userController = {
                     password: hash,
                     firstName,
                     lastName,
-                    image: image ? image : null,
-                    oeDescription
+                    oeDescription,
+                    profilePicture: req.file.path
                 });
 
                 // Create a jwt with the usernem firstName and lastName that expires in one hour
